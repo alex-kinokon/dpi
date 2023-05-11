@@ -1,0 +1,197 @@
+name,width,height,diagonal,dppx,year,type,ppi
+Amazon Fire,1024,600,7,1,,tablet,
+Amazon Fire HD 10,1280,800,10.1,1,,table,
+Amazon Fire HD 6,1280,800,6,1.5,,,
+Amazon Fire HD 7,1280,800,7,1.5,,,
+Amazon Fire HD 8,1280,800,8,1.33,,,
+Amazon Fire HDX 8.9,2560,1600,8.9,2,,,
+Amazon Kindle Fire,1024,600,7,1,,,
+Amazon Kindle Fire HD 7,1280,800,7,1.5,,,
+Amazon Kindle Fire HD 8.9,1920,1200,8.9,1.5,,,
+Amazon Kindle Fire HDX 7,1920,1200,7,2,,,
+Amazon Kindle Fire HDX 8.9,2560,1600,8.9,2,,,
+"Amazon Kindle Paperwhite (1st, 2nd)",758,1024,6,1.33,,,
+Amazon Kindle Paperwhite (3rd),1080,1440,6,2,,,
+AOC i2352Vh,1920,1080,23,?,,,
+Apple Cinema Display,1680,1050,20.1,?,,,
+Apple iMac (21-inch),1920,1080,21.5,?,,,
+Apple iMac (27-inch),2560,1440,27,?,,,
+Apple iMac Retina 4K,4096,2304,21.5,?,,,
+Apple iMac Retina 5K,5120,2880,27,?,,,
+"Apple iPad 1, 2",1024,768,9.7,?,,,
+"Apple iPad 3, 4",2048,1536,9.7,2,,,
+"Apple iPad Air 1, 2",2048,1536,9.7,2,,,
+Apple iPad mini,1024,768,7.9,?,,,163
+Apple iPad mini Retina,2048,1536,7.9,2,,,
+Apple iPad Pro (1-3) 12.9″,2732,2048,12.9,2,,,264
+Apple iPad Pro (1) 9.7″,2224,1668,10.5,2,,,264
+Apple iPad Pro (2) 10.5″,2224,1668,10.5,2,,,264
+Apple iPad Pro (3) 11″,2388,1668,11,2,,,264
+"Apple iPhone 1, 3G, 3GS",320,480,3.5,?,,,163
+Apple iPhone 12,1170,2532,6.1,,2020,,
+"Apple iPhone 4, 4S",640,960,3.5,2,,,326
+"Apple iPhone 5, 5S, 5C, SE",640,1136,4,2,,,326
+"Apple iPhone 6 Plus, 6S Plus, 7 Plus",1080,1920,5.5,2.46,,,401
+"Apple iPhone 6, 6S, 7",750,1334,4.7,2,,,326
+"Apple iPhone X, XS",1125,2436,5.8,3,,,458
+Apple iPhone XR,828,1792,6.1,2,,,326
+Apple iPhone XS Max,1242,2688,6.5,3,,,458
+Apple MacBook,2304,1440,12,2,,,
+Apple MacBook Air (11-inch),1366,768,11.6,?,,,
+Apple MacBook Air (13-inch),1440,900,13.3,?,,,
+Apple MacBook Pro,1680,1050,15.4,?,,,
+Apple MacBook Pro,1920,1200,17,?,,,133
+Apple MacBook Pro (13-inch),1280,800,13.3,?,,,
+Apple MacBook Pro (15-inch),1440,900,15.4,?,,,
+Apple MacBook Pro with Retina Display (13-inch),2560,1600,13.3,2,,,
+Apple MacBook Pro with Retina Display (15-inch),2880,1800,15.4,2,,,220
+Apple PowerBook G4,1024,768,12.1,?,,,106
+Apple Thunderbolt Display,2560,1440,27,?,,,
+Asus Nexus 7 (2012),1280,800,7,1.325,,,
+Asus Nexus 7 (2013),1920,1200,7,2,,,
+Asus Zenfone 5 A501CG,720,1280,5,?,,,
+Barnes & Noble Nook HD,1440,900,7,?,,,243
+Barnes & Noble Nook HD+,1920,1280,9,?,,,256
+Ben NanoNote,320,240,3,?,,,
+BlackBerry Passport,1440,1440,4.5,?,,,
+BlackBerry PlayBook,600,1024,7,?,,,
+BlackBerry Q10,720,720,3.1,2,,,330
+BlackBerry Q5,720,720,3.1,2,,,330
+BlackBerry Z10,768,1280,4.2,2,,,356
+BlackBerry Z30,720,1280,5,2,,,295
+BQ Aquaris M10,800,1200,10.1,?,,,149
+CREO Mark 1,1440,2560,5.5,?,,,
+Dell Latitude 10,1336,768,10.1,1,,,
+Dell Precision 5510,3840,2160,15.6,?,,,
+Dell S2415H,1920,1080,23.8,?,,,
+Dell SP2309W,2048,1152,23,?,,,
+Dell Ultra HD 4k P2715Q,3840,2160,27,?,,,
+Dell UltraSharp P2415Q,3840,2160,23.8,?,,,
+Dell UltraSharp U2412M,1920,1200,24,?,,,
+Dell UltraSharp U2414H,1920,1080,23.8,?,,,
+Dell UltraSharp UP2414Q,3840,2160,23.8,?,,,
+Dell UltraSharp UP2715K,5120,2880,27,?,,,
+Dell UltraSharp UP3216Q,3840,2160,31.5,?,,,
+Dell XPS 13 FHD,1920,1080,13.3,?,,,
+Dell XPS 13 QHD,3200,1800,13.3,?,,,
+Dell XPS 15 4k UltraHD,3840,2160,15.6,?,,,
+Eizo CG318-4K,4096,2160,31.1,?,,,
+Google Chromebook Pixel,2560,1700,12.85,?,,,
+Google Pixel,1920,1080,5,?,,,
+Google Pixel 3a,1080,2220,5.6,2.75,,,
+Google Pixel C,2560,1800,10.2,?,,,
+Google Pixel XL,2560,1440,5.5,?,,,
+HP ZR30w,2560,1600,29.7,?,,,
+HTC Desire C,320,480,3.5,?,,,
+HTC Desire Z / T-Mobile G2,480,800,3.7,?,,,
+HTC Evo,480,800,4.3,?,,,
+HTC Imagio,480,800,3.6,?,,,
+HTC Nexus 9,2048,1536,8.9,2,,,
+HTC One,1080,1920,4.7,3,,,
+HTC One M9,1080,1920,5,?,,,
+HTC One Max,1080,1920,5.9,2.5,,,
+HTC One Mini,720,1280,4.3,?,,,
+HTC One V,480,800,3.7,?,,,
+HTC One X,720,1280,4.7,?,,,
+HTC Pure,480,800,3.2,?,,,
+HTC Sensation,540,960,4.3,?,,,
+Huawei Nexus 6P,2560,1440,5.7,?,,,
+Huawei Y5 II,720,1280,5,?,,,
+IBM T221,3840,2400,22,?,,,
+Jiayu G4S,720,1280,4.7,?,,,
+Lenovo ideapad U310,1366,768,13.3,?,,,
+Lenovo ThinkPad Edge E531 N4IBPGE,1920,1080,15.6,?,,,
+Lenovo ThinkPad T450s,1920,1080,14,?,,,
+Lenovo ThinkPad X1 Carbon WQHD,2560,1440,14,?,,,
+Lenovo Y50 UHD,3840,2160,15.6,?,,,
+Lenovo Yoga 2 Pro,3200,1800,13.3,?,,,
+Lenovo Yoga 3 Pro,3200,1800,13.3,?,,,
+LG 23MP68VQ,1920,1080,23,?,,,
+LG 23MP68VQ-P,1920,1080,23,?,,,
+LG 31MU97,4096,2160,31,?,,,
+LG G2,1080,1920,5.2,?,,,424
+LG G3,1440,2560,5.5,?,,,538
+LG G4,1440,2560,5.5,?,,,538
+LG G5,1440,2560,5.3,?,,,
+LG G6,1440,2880,5.7,4,,,564
+LG Nexus 4,1280,768,4.7,?,,,
+LG Nexus 5,1920,1080,4.95,3,,,
+LG Nexus 5X,1920,1080,5.2,?,,,
+LG V30,1440,2880,6,?,,,
+Micromax A110,480,856,4.9,?,,,200
+Micromax Canvas A1,480,854,4.5,?,,,240
+Microsoft Surface,1366,768,10.6,?,,,
+Microsoft Surface 2,1920,1080,10.6,?,,,
+Microsoft Surface Book,3000,2000,13.5,2,,,
+Microsoft Surface Pro,1920,1080,10.6,?,,,
+Microsoft Surface Pro 2,1920,1080,10.6,?,,,
+Microsoft Surface Pro 3,2160,1440,12,?,,,
+Microsoft Surface Pro 4,2736,1824,12.3,2,,,
+Motorola Droid Turbo,1440,2560,5.2,?,,,
+Motorola Moto E,540,960,4.3,?,,,256
+Motorola Moto G,720,1280,4.5,2,,,326
+Motorola Moto X,720,1280,4.7,2,,,312
+Motorola Nexus 6,2560,1440,5.96,?,,,
+Nokia Lumia 1020,768,1280,4.5,1.6667,,,
+Nokia Lumia 520,480,800,4,?,,,
+Nokia Lumia 521,480,800,4,?,,,
+Nokia Lumia 620,480,800,3.8,?,,,
+Nokia Lumia 625,480,800,4.7,?,,,
+Nokia Lumia 720,480,800,4.3,?,,,
+Nokia Lumia 820,480,800,4.3,?,,,
+Nokia Lumia 822,480,800,4.3,?,,,
+Nokia Lumia 920,768,1280,4.5,1.6667,,,
+Nokia Lumia 928,768,1280,4.5,1.6667,,,
+Nokia N9,480,854,3.9,?,,,
+Nokia N900,800,480,3.5,?,,,
+Nokia N950,480,854,4,?,,,
+OnePlus 5T,1080,2160,6.01,?,,,
+OnePlus 8,1080,2400,6.55,2.61,,,
+OnePlus One,1080,1920,5.5,3,,,
+OnePlus Pad,2000,2800,11.61,,,,
+"Openmoko Neo1973, Neo FreeRunner",480,640,2.84,?,,,
+OpenPhoenux GTA04,480,640,2.84,?,,,
+Realme 11 Pro,1080,2412,6.7,,,,
+Samsung Galaxy Mini 2,320,480,3.27,?,,,
+Samsung Galaxy Nexus,1280,720,4.65,?,,,
+Samsung Galaxy Note 3,1920,1080,5.7,2,,,
+Samsung Galaxy S,480,800,4,?,,,233
+Samsung Galaxy S2,480,800,4.3,1.5,,,217
+Samsung Galaxy S2 Skyrocket,480,800,4.5,?,,,207
+Samsung Galaxy S3,1280,720,4.8,2,,,
+Samsung Galaxy S4,1920,1080,5,3,,,
+Samsung Galaxy S5,1920,1080,5.1,3,,,432
+Samsung Galaxy S5 mini,1280,720,4.5,3.396,,,326
+"Samsung Galaxy S6, S6 Edge",1440,2560,5.1,4,,,577
+Samsung Galaxy S7,2560,1440,5.1,?,,,
+Samsung Galaxy S7 Edge,2560,1440,5.5,?,,,
+Samsung Galaxy S8,2960,1440,5.8,?,,,
+Samsung Galaxy S8+ Plus,2960,1440,6.2,?,,,
+Samsung Galaxy Tab 10.1,800,1280,10.1,?,,,149.45
+Samsung Galaxy Tab 7.0 Plus,600,1024,7,?,,,169
+Samsung Galaxy Tab 8.9,800,1280,8.9,?,,,169
+Samsung Galaxy Tab Active 8.0,800,1280,8,?,,,189
+Samsung Galaxy Xcover 2,480,800,4,?,,,
+Samsung Galaxy Xcover 3,480,800,4.5,?,,,
+Samsung Galaxy Young,320,480,3.27,?,,,
+Samsung Galaxy Z Flip4,1080,2640,6.7,,,,
+Samsung Galaxy Z Fold4,1812,2176,7.6,,,,
+Samsung Nexus 10,2560,1600,10.055,2,,,
+Samsung Nexus S,480,800,4,?,,,
+Sony Xperia Miro,320,480,3.5,?,,,
+Sony Xperia SP,720,1080,4.6,?,,,
+Sony Xperia X,1920,1080,5,?,,,
+Sony Xperia X Compact,1280,720,4.6,?,,,
+Sony Xperia X Performance,1920,1080,5,?,,,
+Sony Xperia XA,1280,720,5,?,,,
+Sony Xperia XA Ultra,1920,1080,6,?,,,
+Sony Xperia XZ,1920,1080,5.2,?,,,
+Sony Xperia Z5 Compact,1280,720,4.6,?,,,
+Sony Xperia Z5 Premium,3840,2160,5.5,?,,,
+Tesco Hudl 2,1920,1200,8.3,2,,,273
+Wileyfox STORM,1080,1920,5.5,?,,,
+Wileyfox SWIFT,720,1280,5,?,,,
+Xiaomi Redmi Note 4,1080,1920,5.5,?,,,
+Xiaomi Redmi Note 5,1080,2160,5.99,?,,,
+ZTE Open,320,480,3.5,?,,,165
+ZTE ZMax,720,1280,5.7,?,,,

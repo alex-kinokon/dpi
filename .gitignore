@@ -1,3 +1,6 @@
+.cache
+repl.ts
+
 # Logs
 logs
 *.log

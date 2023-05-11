@@ -2,10 +2,11 @@ import { css } from "@emotion/css";
 import { uniqBy } from "lodash-es";
 import { useEffect, useState } from "preact/hooks";
 import { useCallback, useMemo, useRef } from "react";
-import logo from "./assets/logo.svg";
-import searchIcon from "./assets/search.svg";
-import noise from "./assets/noise.png";
-import resolution from "./assets/resolutions.json";
+import searchIcon from "../assets/search.svg";
+import noise from "../assets/noise.png";
+import resolution from "../assets/resolutions.json";
+import { Table } from "./Table";
+import { Header } from "./Header";
 
 const enum Dimension {
   d,
@@ -24,22 +25,12 @@ function calcDpi(w: number, h: number, d: number, opt: Dimension = Dimension.d) 
 
 const diagonal = [7, 11.6, 13.3, 14, 15.6, 17.3, 21, 24, 27];
 
-function useData<T>(get: () => Promise<{ default: T[] }>) {
-  const [data, setData] = useState<T[]>([]);
-  useEffect(() => {
-    get().then(d => setData(d.default));
-  }, []);
-  return data;
-}
-
 export function App() {
   const [width, setWidth] = useState(screen.width);
   const [height, setHeight] = useState(screen.height);
   const [dimension, setDimension] = useState<Dimension>(Dimension.d);
   const [physical, setPhysical] = useState(13.3);
   const [search, setSearch] = useState("");
-
-  const devices = useData(() => import("./assets/devices.json"));
 
   const currentScreen = useMemo(
     () => ({
@@ -130,22 +121,6 @@ export function App() {
     };
   }, []);
 
-  const filtered = useMemo(
-    () =>
-      search
-        ? devices.filter(
-            screen =>
-              screen.name.toLowerCase().includes(search.toLowerCase()) ||
-              screen.d.toString().includes(search) ||
-              screen.w.toString().includes(search) ||
-              screen.h.toString().includes(search) ||
-              screen.ppi?.toString().includes(search) ||
-              screen.dppx?.toString().includes(search)
-          )
-        : devices,
-    [devices, search]
-  );
-
   return (
     <div
       className={css`
@@ -157,52 +132,7 @@ export function App() {
         }
       `}
     >
-      <header
-        className={css`
-          text-align: center;
-        `}
-      >
-        <a
-          href="./"
-          className={css`
-            text-decoration: none;
-          `}
-        >
-          <h1
-            className={css`
-              align-items: center;
-              color: red;
-              display: flex;
-              font-size: 300%;
-              font-weight: 300;
-              margin: 0 auto 20px;
-              width: 244px;
-            `}
-          >
-            <img
-              src={logo}
-              className={css`
-                width: 90px;
-                height: 83px;
-                vertical-align: 10px;
-              `}
-            />
-            <strong
-              className={css`
-                color: black;
-                font-weight: bold;
-                letter-spacing: -0.05em;
-                @media (prefers-color-scheme: dark) {
-                  color: white;
-                }
-              `}
-            >
-              dpi
-            </strong>
-            love
-          </h1>
-        </a>
-      </header>
+      <Header />
       <section
         className={css`
           display: grid;
@@ -391,7 +321,7 @@ export function App() {
       <section
         className={css`
           margin-top: 20px;
-          max-width: 32em;
+          max-width: 34em;
           margin: 0 auto;
         `}
       >
@@ -421,78 +351,7 @@ export function App() {
             overflow: auto;
           `}
         >
-          <table
-            className={css`
-              width: 100%;
-              border-spacing: 0;
-              td,
-              th {
-                padding: 0.3em;
-              }
-              th:first-child {
-                text-align: right;
-              }
-
-              th:nth-child(4),
-              td:nth-child(4) {
-                background-color: #fdd;
-                text-shadow: 0 1px 1px white;
-                @media (prefers-color-scheme: dark) {
-                  background-color: #470000;
-                  text-shadow: none;
-                }
-              }
-            `}
-          >
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Diagonal</th>
-                <th>Resolution</th>
-                <th
-                  className={css`
-                    border-radius: 0.3em 0.3em 0 0;
-                  `}
-                >
-                  DPI
-                </th>
-                <th>dppx</th>
-              </tr>
-            </thead>
-            <tbody>
-              {!filtered.length && (
-                <tr>
-                  <td colSpan={5}>No Results</td>
-                </tr>
-              )}
-              {filtered.map(screen => (
-                <tr key={screen.name + screen.w}>
-                  <th>
-                    <a href={`#${screen.w}×${screen.h}@${screen.d}″`}>
-                      <span>{screen.name}</span>
-                    </a>
-                  </th>
-                  <td>
-                    <span>{screen.d}</span>”
-                  </td>
-                  <td>
-                    <span>{screen.w}</span>×<span>{screen.h}</span>
-                  </td>
-                  <td
-                    className={css`
-                      text-align: center;
-                      font-variant-numeric: tabular-nums;
-                    `}
-                  >
-                    {Math.round(
-                      Math.sqrt(screen.w * screen.w + screen.h * screen.h) / screen.d
-                    )}
-                  </td>
-                  <td>{screen.dppx ?? "?"}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <Table search={search} />
         </div>
       </section>
 
