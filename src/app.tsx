@@ -1,27 +1,11 @@
-import { css, cx } from "@emotion/css";
+import { css } from "@emotion/css";
+import { uniqBy } from "lodash-es";
 import { useEffect, useState } from "preact/hooks";
-import { useMemo, useRef } from "react";
+import { useCallback, useMemo, useRef } from "react";
 import logo from "./assets/logo.svg";
+import searchIcon from "./assets/search.svg";
 import noise from "./assets/noise.png";
-import screens from "./assets/screens.json";
-import * as devices from "./assets/devices.json";
-
-const fieldSetClass = css`
-  display: inline-block;
-  vertical-align: top;
-  width: 45%;
-  padding: 0;
-  border: none;
-  margin: 0;
-  font-weight: 300;
-
-  p {
-    font-size: 50%;
-    opacity: 0.5;
-    transition: 0.3s opacity;
-    font-weight: normal;
-  }
-`;
+import resolution from "./assets/resolutions.json";
 
 const enum Dimension {
   d,
@@ -38,12 +22,32 @@ function calcDpi(w: number, h: number, d: number, opt: Dimension = Dimension.d) 
   return dpi > 0 ? Math.round(dpi) : 0;
 }
 
+const diagonal = [7, 11.6, 13.3, 14, 15.6, 17.3, 21, 24, 27];
+
+function useData<T>(get: () => Promise<{ default: T[] }>) {
+  const [data, setData] = useState<T[]>([]);
+  useEffect(() => {
+    get().then(d => setData(d.default));
+  }, []);
+  return data;
+}
+
 export function App() {
   const [width, setWidth] = useState(screen.width);
   const [height, setHeight] = useState(screen.height);
   const [dimension, setDimension] = useState<Dimension>(Dimension.d);
   const [physical, setPhysical] = useState(13.3);
   const [search, setSearch] = useState("");
+
+  const devices = useData(() => import("./assets/devices.json"));
+
+  const currentScreen = useMemo(
+    () => ({
+      width: screen.width * window.devicePixelRatio,
+      height: screen.height * window.devicePixelRatio,
+    }),
+    []
+  );
 
   const output = useRef<HTMLOutputElement>(null);
   const [outputMinWidth, setOutputMinWidth] = useState(0);
@@ -65,20 +69,31 @@ export function App() {
     setOutputHeight(output.current!.offsetWidth / ratio);
   }, [width, height]);
 
+  const reset = useCallback(() => {
+    setWidth(currentScreen.width);
+    setHeight(currentScreen.height);
+  }, [currentScreen]);
+
+  const resolutions = useMemo(
+    () =>
+      uniqBy(
+        resolution
+          .concat({
+            w: currentScreen.width,
+            h: currentScreen.height,
+          })
+          .sort((a, b) => b.w - a.w || b.h - a.h),
+        ({ w, h }) => `${w}_${h}`
+      ),
+    [currentScreen]
+  );
+
+  useEffect(() => {
+    reset();
+  }, []);
+
   useEffect(() => {
     const hashRegex = /^#(\d+)[x×](\d+)(@(\d*\.?\d+)["″])?|(\d*\.?\d+)["″]$/;
-
-    const dppx =
-      window.devicePixelRatio ||
-      (window.matchMedia(
-        "(min-resolution: 2dppx), (-webkit-min-device-pixel-ratio: 1.5),(-moz-min-device-pixel-ratio: 1.5),(min-device-pixel-ratio: 1.5)"
-      ).matches
-        ? 2
-        : 1) ||
-      1;
-
-    setWidth(screen.width * dppx);
-    setHeight(screen.height * dppx);
 
     const onHashChange = () => {
       const hash = decodeURIComponent(location.hash);
@@ -104,10 +119,12 @@ export function App() {
         }
         setDimension(Dimension.d);
       }
+
+      return true;
     };
 
     window.addEventListener("hashchange", onHashChange, false);
-    onHashChange();
+    onHashChange() || reset();
     return () => {
       window.removeEventListener("hashchange", onHashChange, false);
     };
@@ -116,86 +133,121 @@ export function App() {
   const filtered = useMemo(
     () =>
       search
-        ? screens.filter(
+        ? devices.filter(
             screen =>
               screen.name.toLowerCase().includes(search.toLowerCase()) ||
               screen.d.toString().includes(search) ||
               screen.w.toString().includes(search) ||
               screen.h.toString().includes(search) ||
-              screen.dpi?.toString().includes(search) ||
+              screen.ppi?.toString().includes(search) ||
               screen.dppx?.toString().includes(search)
           )
-        : screens,
-    [search]
+        : devices,
+    [devices, search]
   );
 
   return (
-    <div>
-      <header>
-        <h1
+    <div
+      className={css`
+        a {
+          color: slategray;
+          @media (prefers-color-scheme: dark) {
+            color: #ccc;
+          }
+        }
+      `}
+    >
+      <header
+        className={css`
+          text-align: center;
+        `}
+      >
+        <a
+          href="./"
           className={css`
-            margin-top: 0;
-            font-size: 300%;
-            font-weight: 300;
-            color: red;
-            text-align: center;
+            text-decoration: none;
           `}
         >
-          <img
-            src={logo}
+          <h1
             className={css`
-              width: 100px;
-              height: 93px;
-              margin-right: -25px;
-              vertical-align: 10px;
-            `}
-          />
-          <strong
-            className={css`
-              color: black;
-              font-weight: bold;
-              letter-spacing: -0.05em;
+              align-items: center;
+              color: red;
+              display: flex;
+              font-size: 300%;
+              font-weight: 300;
+              margin: 0 auto 20px;
+              width: 244px;
             `}
           >
-            dpi
-          </strong>
-          love
-        </h1>
+            <img
+              src={logo}
+              className={css`
+                width: 90px;
+                height: 83px;
+                vertical-align: 10px;
+              `}
+            />
+            <strong
+              className={css`
+                color: black;
+                font-weight: bold;
+                letter-spacing: -0.05em;
+                @media (prefers-color-scheme: dark) {
+                  color: white;
+                }
+              `}
+            >
+              dpi
+            </strong>
+            love
+          </h1>
+        </a>
       </header>
-      <section>
-        <fieldset
-          className={cx(
-            fieldSetClass,
-            css`
-              text-align: right;
-              padding-right: 3%;
-              border-right: 1px solid #eee;
-            `
-          )}
+      <section
+        className={css`
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+        `}
+      >
+        <div
+          className={css`
+            text-align: right;
+            padding-right: 3%;
+            border-right: 1px solid #eee;
+            @media (prefers-color-scheme: dark) {
+              border-right-color: #333;
+            }
+          `}
         >
-          Resolution:
-          <input
-            id="width"
-            type="number"
-            value={width}
-            onInput={e => setWidth(e.currentTarget.valueAsNumber)}
+          <div
             className={css`
-              width: 60px;
+              margin-bottom: 6px;
             `}
-          />
-          ×
-          <input
-            id="height"
-            type="number"
-            value={height}
-            onInput={e => setHeight(e.currentTarget.valueAsNumber)}
-            className={css`
-              width: 60px;
-            `}
-          />
-          <p id="resolutions">
+          >
+            <label>Resolution:</label>
+            <input
+              id="width"
+              type="number"
+              value={width}
+              onInput={e => setWidth(e.currentTarget.valueAsNumber)}
+              className={css`
+                width: 70px;
+              `}
+            />
+            ×
+            <input
+              id="height"
+              type="number"
+              value={height}
+              onInput={e => setHeight(e.currentTarget.valueAsNumber)}
+              className={css`
+                width: 70px;
+              `}
+            />
+          </div>
+          <div>
             Common:
-            {devices.resolution.map(({ w, h }, i) => (
+            {resolutions.map(({ w, h }, i) => (
               <a
                 key={i}
                 href={`#${w}×${h}`}
@@ -204,50 +256,59 @@ export function App() {
                   setWidth(w);
                   setHeight(h);
                 }}
+                style={
+                  w === currentScreen.width && h === currentScreen.height
+                    ? { fontWeight: "bold" }
+                    : undefined
+                }
                 className={css`
                   margin: 0 0.2em;
+                  display: inline-block;
                 `}
               >
                 <span>{w}</span>×<span>{h}</span>
               </a>
             ))}
-          </p>
-        </fieldset>
+          </div>
+        </div>
 
-        <fieldset
-          className={cx(
-            fieldSetClass,
-            css`
-              text-align: left;
-              padding-left: 3%;
-              margin-left: -0.25em;
-            `
-          )}
+        <div
+          className={css`
+            text-align: left;
+            padding-left: 3%;
+            margin-left: -0.25em;
+          `}
         >
-          <select
-            id="dimension"
-            title="Physical dimension (in inches)"
-            onChange={e => setDimension(e.currentTarget.value as any)}
-            value={dimension}
-          >
-            <option value={Dimension.d}>Diagonal</option>
-            <option value={Dimension.w}>Width</option>
-            <option value={Dimension.h}>Height</option>
-          </select>
-          :
-          <input
-            id="physical"
-            type="number"
-            value={physical}
-            onInput={e => setPhysical(e.currentTarget.valueAsNumber)}
+          <div
             className={css`
-              width: 60px;
+              margin-bottom: 4px;
             `}
-          />
-          ″
-          <p id="diagonals">
+          >
+            <select
+              id="dimension"
+              title="Physical dimension (in inches)"
+              onChange={e => setDimension(e.currentTarget.value as any)}
+              value={dimension}
+            >
+              <option value={Dimension.d}>Diagonal</option>
+              <option value={Dimension.w}>Width</option>
+              <option value={Dimension.h}>Height</option>
+            </select>
+            :
+            <input
+              id="physical"
+              type="number"
+              value={physical}
+              onInput={e => setPhysical(e.currentTarget.valueAsNumber)}
+              className={css`
+                width: 70px;
+              `}
+            />
+            ″
+          </div>
+          <div>
             Common diagonals:
-            {devices.diagonal.map((d, i) => (
+            {diagonal.map((d, i) => (
               <a
                 key={i}
                 href={`#${d}″`}
@@ -255,80 +316,85 @@ export function App() {
                 onClick={() => setPhysical(d)}
                 className={css`
                   margin: 0 0.2em;
+                  display: inline-block;
                 `}
               >
                 {d}
               </a>
             ))}
-          </p>
-        </fieldset>
-
-        <output
-          ref={output}
-          style={{
-            minWidth: outputMinWidth,
-            width: outputWidth,
-            height: outputHeight,
-          }}
-          className={css`
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-width: 10em;
-            max-width: 100%;
-            width: 15em;
-            min-height: 8em;
-            max-height: 20em;
-            border: 15px solid transparent;
-            border-radius: 12px;
-            margin: 1em auto 0;
-            background: linear-gradient(to bottom right, gray, black), url(${noise}),
-              linear-gradient(to bottom right, #eee, #ccc);
-            background-origin: padding-box, border-box, border-box;
-            background-clip: padding-box, border-box, border-box;
-            box-shadow: 1px 1px 3px black inset, 0 -1px white, 0 -1px 0 1px #bbb,
-              0 2px 0 1px #aaa, 0 2px 10px 1px rgba(0, 0, 0, 0.2);
-            color: white;
-            text-shadow: 0 -1px 2px black;
-            text-align: center;
-            transition-duration: 0.3s;
-            transition-property: width, height, line-height;
-          `}
-        >
-          <div
-            ref={resultContainer}
-            className={css`
-              display: inline-block;
-              vertical-align: middle;
-              line-height: 1.1;
-              margin-top: -1em;
-            `}
-          >
-            <strong
-              id="result"
-              className={css`
-                display: block;
-                font-size: 400%;
-                letter-spacing: -1px;
-              `}
-            >
-              {result}
-            </strong>
-            pixels per inch
           </div>
-        </output>
+        </div>
       </section>
 
-      <section>
-        <h1
+      <output
+        ref={output}
+        style={{
+          minWidth: outputMinWidth,
+          width: outputWidth,
+          height: outputHeight,
+        }}
+        className={css`
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          min-width: 10em;
+          max-width: 100%;
+          width: 15em;
+          min-height: 8em;
+          max-height: 20em;
+          border: 15px solid transparent;
+          border-radius: 12px;
+          margin: 2em auto;
+          background: linear-gradient(to bottom right, gray, black), url(${noise}),
+            linear-gradient(to bottom right, #eee, #ccc);
+          background-origin: padding-box, border-box, border-box;
+          background-clip: padding-box, border-box, border-box;
+          box-shadow: 1px 1px 3px black inset, 0 -1px white, 0 -1px 0 1px #bbb,
+            0 2px 0 1px #aaa, 0 2px 10px 1px rgba(0, 0, 0, 0.2);
+          color: white;
+          text-shadow: 0 -1px 2px black;
+          text-align: center;
+          transition-duration: 0.3s;
+          transition-property: width, height, line-height;
+
+          @media (prefers-color-scheme: dark) {
+            background-image: linear-gradient(to right bottom, #60686c, #000),
+              url(${noise}), linear-gradient(to right bottom, #222426, #35393b);
+            box-shadow: #000 1px 1px 3px inset, #181a1b 0px -1px, #3e4446 0px -1px 0px 1px,
+              #484e51 0px 2px 0px 1px, rgba(0, 0, 0, 0.2) 0px 2px 10px 1px;
+            color: #e8e6e3;
+            text-shadow: #000 0px -1px 2px;
+          }
+        `}
+      >
+        <div
+          ref={resultContainer}
           className={css`
-            font-size: 200%;
-            font-weight: 300;
-            text-align: center;
+            line-height: 1.1;
+            margin-top: -1em;
           `}
         >
-          Known screens
-        </h1>
+          <strong
+            id="result"
+            className={css`
+              display: block;
+              font-size: 400%;
+              letter-spacing: -1px;
+            `}
+          >
+            {result}
+          </strong>
+          pixels per inch
+        </div>
+      </output>
+
+      <section
+        className={css`
+          margin-top: 20px;
+          max-width: 32em;
+          margin: 0 auto;
+        `}
+      >
         <input
           type="search"
           placeholder="Search…"
@@ -340,37 +406,19 @@ export function App() {
             appearance: none;
             display: block;
             width: 100%;
-            padding: 0.1em 0 0 1.3em;
+            padding: 0.2em 0 0.2em 1.5em;
             box-sizing: border-box;
             border-radius: 999px;
             font: inherit;
-            background: url(${search}) no-repeat 0.3em 50% / 1em auto;
+            background: url(${searchIcon}) no-repeat 0.3em 50% / 1em auto;
           `}
         />
 
         <div
-          id="devices"
           className={css`
-            max-height: 19.8em;
+            max-height: 16em;
             margin-top: 1em;
             overflow: auto;
-            background: linear-gradient(white 30%, rgba(255, 255, 255, 0)),
-              linear-gradient(rgba(255, 255, 255, 0), white 70%) 0 100%,
-              radial-gradient(
-                farthest-side at 50% 0,
-                rgba(0, 0, 0, 0.1),
-                rgba(0, 0, 0, 0)
-              ),
-              radial-gradient(
-                  farthest-side at 50% 100%,
-                  rgba(0, 0, 0, 0.1),
-                  rgba(0, 0, 0, 0)
-                )
-                0 100%;
-            background-repeat: no-repeat;
-            background-color: white;
-            background-size: 100% 40px, 100% 40px, 100% 10px, 100% 10px;
-            background-attachment: local, local, scroll, scroll;
           `}
         >
           <table
@@ -387,8 +435,12 @@ export function App() {
 
               th:nth-child(4),
               td:nth-child(4) {
-                background: #fdd;
+                background-color: #fdd;
                 text-shadow: 0 1px 1px white;
+                @media (prefers-color-scheme: dark) {
+                  background-color: #470000;
+                  text-shadow: none;
+                }
               }
             `}
           >
@@ -426,11 +478,15 @@ export function App() {
                   <td>
                     <span>{screen.w}</span>×<span>{screen.h}</span>
                   </td>
-                  <td>
-                    {screen.dpi ??
-                      Math.round(
-                        Math.sqrt(screen.w * screen.w + screen.h * screen.h) / screen.d
-                      )}
+                  <td
+                    className={css`
+                      text-align: center;
+                      font-variant-numeric: tabular-nums;
+                    `}
+                  >
+                    {Math.round(
+                      Math.sqrt(screen.w * screen.w + screen.h * screen.h) / screen.d
+                    )}
                   </td>
                   <td>{screen.dppx ?? "?"}</td>
                 </tr>
@@ -445,20 +501,15 @@ export function App() {
           text-align: center;
           padding-top: 1em;
           border-top: 1px solid #eee;
-          margin-top: 2em;
+          margin-top: 1em;
+          @media (prefers-color-scheme: dark) {
+            border-top-color: #333;
+          }
         `}
       >
         Forked from <a href="https://github.com/LeaVerou/dpi">dpi.lv</a> by{" "}
         <a href="http://lea.verou.me/">Lea Verou</a>.
       </footer>
-
-      <a href="http://github.com/LeaVerou/dpi">
-        <img
-          style="position: absolute; top: 0; left: 0; border: 0"
-          src="https://github.com/usecue/fork-me-on-github-svg-ribbons/raw/master/images/forkme_left_red_aa0000.svg"
-          alt="Fork me on GitHub"
-        />
-      </a>
     </div>
   );
 }
