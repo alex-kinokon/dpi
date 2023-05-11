@@ -49,5 +49,15 @@
     "semi": true,
     "singleQuote": false,
     "trailingComma": "es5"
+  },
+  "upstream": {
+    "version": 1,
+    "sources": {
+      "main": {
+        "repository": "git@github.com:LeaVerou/dpi.git",
+        "commit": "89cb3eab3cba43168973b59d919476073609da75",
+        "branch": "gh-pages"
+      }
+    }
   }
 }

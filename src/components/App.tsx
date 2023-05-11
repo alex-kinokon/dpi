@@ -321,7 +321,7 @@ export function App() {
       <section
         className={css`
           margin-top: 20px;
-          max-width: 34em;
+          max-width: 41em;
           margin: 0 auto;
         `}
       >

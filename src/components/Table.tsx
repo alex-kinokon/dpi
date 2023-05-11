@@ -15,7 +15,6 @@ function useData<T>(get: () => Promise<T[]>) {
 export function Table({ search }: { search: string }) {
   const devices = useData(async () => {
     const { default: csv } = await import("../assets/devices.csv?raw");
-    console.log(csv);
     return csvParse<Device, string>(csv, autoType);
   });
 
@@ -25,9 +24,11 @@ export function Table({ search }: { search: string }) {
       key: keyof Device | "resolution";
     }[] => [
       { label: "Name", key: "name" },
-      { label: "Diagonal", key: "diagonal" },
+      { label: "Size", key: "diagonal" },
       { label: "Resolution", key: "resolution" },
       { label: "DPI", key: "ppi" },
+      { label: "Type", key: "type" },
+      { label: "Year", key: "year" },
       { label: "dppx", key: "dppx" },
     ],
     []
@@ -41,7 +42,9 @@ export function Table({ search }: { search: string }) {
     if (search) {
       res = res.filter(
         s =>
-          s.name.toLowerCase().includes(search.toLowerCase()) ||
+          String(s.manufacturer + " " + s.name)
+            .toLowerCase()
+            .includes(search.toLowerCase()) ||
           s.diagonal.toString().includes(search) ||
           s.width.toString().includes(search) ||
           s.height.toString().includes(search) ||
@@ -49,7 +52,13 @@ export function Table({ search }: { search: string }) {
           s.dppx?.toString().includes(search)
       );
     }
-    if (sortColumn === "resolution") {
+    if (sortColumn === "name") {
+      res = res.sort((a, b) => {
+        const aName = a.manufacturer + a.name;
+        const bName = b.manufacturer + b.name;
+        return aName.localeCompare(bName) * sortDirection;
+      });
+    } else if (sortColumn === "resolution") {
       res = res.sort((a, b) => {
         const aRes = a.width * a.height;
         const bRes = b.width * b.height;
@@ -148,7 +157,7 @@ export function Table({ search }: { search: string }) {
           </tr>
         )}
         {filtered.map(s => (
-          <Row key={s.name + s.width} row={s} />
+          <Row key={s.manufacturer + s.name + s.width} row={s} />
         ))}
       </tbody>
     </table>
@@ -157,7 +166,7 @@ export function Table({ search }: { search: string }) {
 
 function Row({ row }: { row: Device }) {
   return (
-    <tr key={row.name + row.width}>
+    <tr>
       <th
         className={css`
           width: 50%;
@@ -166,7 +175,9 @@ function Row({ row }: { row: Device }) {
         `}
       >
         <a href={`#${row.width}×${row.height}@${row.diagonal}″`}>
-          <span>{row.name}</span>
+          <span>
+            {row.manufacturer} {row.name}
+          </span>
         </a>
       </th>
       <td>
@@ -181,11 +192,31 @@ function Row({ row }: { row: Device }) {
           font-variant-numeric: tabular-nums;
         `}
       >
-        {Math.round(
-          Math.sqrt(row.width * row.width + row.height * row.height) / row.diagonal
-        )}
+        {getPPI(row)}
+      </td>
+      <td
+        className={css`
+          text-align: center;
+          font-variant-numeric: tabular-nums;
+        `}
+      >
+        {row.type ?? "-"}
+      </td>
+      <td
+        className={css`
+          text-align: center;
+          font-variant-numeric: tabular-nums;
+        `}
+      >
+        {row.year ?? "-"}
       </td>
       <td>{row.dppx ?? "?"}</td>
     </tr>
+  );
+}
+
+function getPPI(row: Device) {
+  return Math.round(
+    Math.sqrt(row.width * row.width + row.height * row.height) / row.diagonal
   );
 }
